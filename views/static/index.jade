@@ -1,0 +1,65 @@
+extends ../layout-common
+
+block content
+	style.
+		.fa-check {color: #0f0; cursor: pointer;}
+		.fa-times {color: #f00; cursor: pointer;}
+		.td-id {text-align:right;}
+		#msg { margin-top: 10px; }
+	script.
+		function updateVisible(_id) {
+			$('#msg').removeClass('alert alert-danger');
+			$('#msg').html('');
+			console.log(_id);
+			var span = $('#span-' + _id);
+			var value = span.hasClass('fa-check') ? 'n' : 'y';
+			$.getJSON('/geis/updateField?_id=' + _id + '&field=visible&value=' + value, setIcon);
+		}
+
+		function setIcon(data) {
+			console.log(data);
+			if (data.msg == 'ok') {
+				var span = $('#span-' + data._id);
+				span.toggleClass('fa-check fa-times');
+			} else {
+				$('#msg').addClass('alert alert-danger');
+				$('#msg').html(data.msg);
+			}
+		}
+
+	h1= title
+
+	div.text-right
+		a.btn.btn-primary.btn-sm(type='button', href='/learn/add') Add
+
+	if (msg)
+		if (msg.indexOf('error') === 0)
+			div#msg.alert.alert-danger= msg
+		else
+			div#msg.alert.alert-success= msg
+
+	if (items.length > 0)
+		table.table.table-striped
+			thead
+				tr
+					th Name
+					th Section
+					th Order
+					th Icon
+					th Type
+					th Visible
+			tbody
+				each item, i in items
+					- var _id = item._id;
+					tr
+						td
+							a(href='/learn/edit/' + _id)= item.name
+						td(style='white-space:nowrap')= sectionMap[item.section_id]
+						td= item.order
+						td: img.img-responsive(src=cdnUrl + 'learn/images/tn/' + item.icon)
+						td= item.type
+						td
+							if (item.visible == 'y')
+								span.fa.fa-check(id='span-' + _id, onclick='updateVisible("' + _id + '")')
+							else
+								span.fa.fa-times(id='span-' + _id, onclick='updateVisible("' + _id + '")')

@@ -1,0 +1,33 @@
+extends ../layout
+block nav
+    div.pull-right#actionNews
+        a(href="/news")
+            .btn.btn-default.pull-right.nav-button Close
+                span.glyphicon.glyphicon-remove-circle.pad-left
+        #save.btn.btn-success.pull-right.nav-button.hide.hidden-xs.hidden-sm Save
+            span.glyphicon.glyphicon-cloud-upload.pad-left
+        #check.btn.btn-info.pull-right.nav-button.hidden-xs.hidden-sm Check JSON
+            span.glyphicon.glyphicon-repeat.pad-left
+block content
+    h4 Static Editor
+    #other_image_outer
+        h5 Add Image(s)
+        form(role='form', action="/upload/static")
+            #image_other.dropzone.file_upload.optional_file
+                .dz-preview
+                    .dz-message Drag a file here to upload
+    #other_image_list_outer.row.padding-lr-sm
+        .col-xs-12.no-padding
+            ul#list-other-images-here.no-bullets.no-padding.pad-left
+
+block js-includes
+    // Used for file uploads
+    script(src='/3rd-party-js/dropzone.js')
+    script(src='/js/upload/dropzone-config.js')
+
+    // Enable clipboard copy feature
+    script(src='/3rd-party-js/clipboard.min.js')
+
+    // Custom stuff
+    script(src='/js/shared/dynamic_sections.js')
+    script(src='/js/static/core.js')

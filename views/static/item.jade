@@ -1,0 +1,57 @@
+extends ../layout-static
+
+block content
+    style.
+        .btn {margin-left:10px;}
+        .well {font-weight:bold;}
+        .btns {margin: 10px 0;}
+        .fa-caret-up, .fa-caret-down {margin-right: 10px;}
+        a, a:hover, a:visited, a:active, a:focus {text-decoration: none;}
+        span.subcategory-label { margin:0 10px; }
+        input[type='radio'] { margin-top: 10px;}
+        select { margin-top: 7px; }
+        #list-other-images-here { text-align: left; }
+
+    div#actionNews
+        a(href="/news")
+            .btn.btn-default.pull-right.nav-button Close
+                span.glyphicon.glyphicon-remove-circle.pad-left
+        #save.btn.btn-success.pull-right.nav-button.hide.hidden-xs.hidden-sm Save
+            span.glyphicon.glyphicon-cloud-upload.pad-left
+
+    h1= title
+    h3= item.name
+
+    - var action = (item._id) ? '/learn/update' : '/learn/insert'
+    - var btnValue = (item._id) ? 'Update' : 'Add'
+    form.form-horizontal(action=action, method='post')
+        if (item._id)
+            input(type='hidden', name='_id', value=item._id)
+
+        div.text-right.btns
+            input.btn.btn-primary.btn-sm(type='button', onclick='location.href="/learn"', value='Cancel')
+            input.btn.btn-primary.btn-sm(type='submit', value=btnValue)
+
+
+    h4 Static Editor
+    #other_image_outer
+        h5 Add Image(s)
+        form(role='form', action="/upload/static")
+            #image_other.dropzone.file_upload.optional_file
+                .dz-preview
+                    .dz-message Drag a file here to upload
+    #other_image_list_outer.row.padding-lr-sm
+        .col-xs-12.no-padding
+            ul#list-other-images-here.no-bullets.no-padding.pad-left
+
+block js
+    // Used for file uploads
+    script(src='/3rd-party-js/dropzone.js')
+    script(src='/js/upload/dropzone-config.js')
+
+    //Enable clipboard copy feature
+    script(src='/3rd-party-js/clipboard.min.js')
+
+    // Custom stuff
+    script(src='/js/shared/dynamic_sections.js')
+    script(src='/js/static/core.js')
